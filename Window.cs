@@ -6,6 +6,7 @@ namespace week_5_assignment
     {
         private readonly DataTable dTable = new();
         private int rowNum = 0;
+        private readonly List<string[]> studentList = new();
 
         public Window()
         {
@@ -18,6 +19,15 @@ namespace week_5_assignment
             dTable.Columns.Add(columnName: "Student Name");
             dTable.Columns.Add(columnName: "Institutional Email");
             dTable.Columns.Add(columnName: "Facebook Link");
+
+            // List tab: columns added manually (no DataSource binding)
+            listDataGridView.Columns.Add("num", "#");
+            listDataGridView.Columns.Add("studentId", "Student ID");
+            listDataGridView.Columns.Add("name", "Student Name");
+            listDataGridView.Columns.Add("email", "Institutional Email");
+            listDataGridView.Columns.Add("fbLink", "Facebook Link");
+            listDataGridView.Columns["num"]!.ReadOnly = true;
+            listDataGridView.Columns["num"]!.FillWeight = 30;
         }
 
         private void OpenAddColumn_Click(object sender, EventArgs e)
@@ -66,7 +76,9 @@ namespace week_5_assignment
 
         private void Tabs_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AcceptButton = Tabs.SelectedTab == user ? submitButton : null;
+            AcceptButton = Tabs.SelectedTab == user ? submitButton
+                : Tabs.SelectedTab == listTab ? listAddButton
+                : null;
         }
 
         private void DataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -178,6 +190,105 @@ namespace week_5_assignment
             dTable.Rows.Add(row: newRow);
 
             clearButton_Click(sender, e);
+        }
+
+        // ── LIST TAB ─────────────────────────────────────────────────────────────
+
+        private void RefreshListGrid()
+        {
+            listDataGridView.Rows.Clear();
+            for (int i = 0; i < studentList.Count; i++)
+            {
+                string[] s = studentList[i];
+                listDataGridView.Rows.Add($"{i + 1}", s[0], s[1], s[2], s[3]);
+            }
+        }
+
+        private void ListAddButton_Click(object sender, EventArgs e)
+        {
+            string studentId = listIdTextBox.Text.Trim();
+            string studentName = listNameTextBox.Text.Trim();
+            string email = listEmailTextBox.Text.Trim();
+            string fbLink = listFbLinkTextBox.Text.Trim();
+
+            if (string.IsNullOrEmpty(studentId))
+            {
+                new ErrorForm("Student ID cannot be empty.").ShowDialog();
+                return;
+            }
+
+            var idParts = studentId.Split('-');
+            bool validIdFormat =
+                idParts.Length == 3
+                && idParts[0].Length == 2 && idParts[0].All(char.IsDigit)
+                && idParts[1].Length == 4 && idParts[1].All(char.IsDigit)
+                && idParts[2].Length == 3 && idParts[2].All(char.IsDigit);
+
+            if (!validIdFormat)
+            {
+                new ErrorForm("Student ID must follow the format YY-NNNN-NNN (e.g. 24-4339-705).").ShowDialog();
+                return;
+            }
+
+            if (string.IsNullOrEmpty(studentName))
+            {
+                new ErrorForm("Student Name cannot be empty.").ShowDialog();
+                return;
+            }
+
+            if (
+                string.IsNullOrEmpty(email)
+                || !email.EndsWith("@cit.edu", StringComparison.OrdinalIgnoreCase)
+            )
+            {
+                new ErrorForm("Institutional Email must be a valid @cit.edu address.").ShowDialog();
+                return;
+            }
+
+            studentList.Add(new[] { studentId, studentName, email, fbLink });
+            RefreshListGrid();
+            ListClearButton_Click(sender, e);
+        }
+
+        private void ListRemoveButton_Click(object sender, EventArgs e)
+        {
+            var rowIndices = listDataGridView
+                .SelectedCells.Cast<DataGridViewCell>()
+                .Select(c => c.RowIndex)
+                .Distinct()
+                .OrderByDescending(i => i)
+                .ToList();
+
+            if (rowIndices.Count == 0)
+                return;
+
+            string msg = rowIndices.Count == 1
+                ? "Remove the selected row?"
+                : $"Remove {rowIndices.Count} selected rows?";
+
+            if (
+                MessageBox.Show(
+                    msg,
+                    "Confirm Removal",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                ) != DialogResult.Yes
+            )
+                return;
+
+            foreach (int idx in rowIndices)
+                if (idx >= 0 && idx < studentList.Count)
+                    studentList.RemoveAt(idx);
+
+            RefreshListGrid();
+        }
+
+        private void ListClearButton_Click(object sender, EventArgs e)
+        {
+            listIdTextBox.Clear();
+            listNameTextBox.Clear();
+            listEmailTextBox.Clear();
+            listFbLinkTextBox.Clear();
         }
     }
 }

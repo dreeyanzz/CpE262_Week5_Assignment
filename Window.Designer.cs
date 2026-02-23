@@ -30,9 +30,17 @@ namespace week_5_assignment
         {
             components = new System.ComponentModel.Container();
             adminToolTip = new ToolTip(components);
+
+            // Styles for dataGridView (DataTable tab)
             DataGridViewCellStyle dgvHeaderStyle = new DataGridViewCellStyle();
             DataGridViewCellStyle dgvAltRowStyle = new DataGridViewCellStyle();
             DataGridViewCellStyle dgvDefaultStyle = new DataGridViewCellStyle();
+
+            // Styles for listDataGridView (List tab)
+            DataGridViewCellStyle listHeaderStyle = new DataGridViewCellStyle();
+            DataGridViewCellStyle listAltRowStyle = new DataGridViewCellStyle();
+            DataGridViewCellStyle listDefaultStyle = new DataGridViewCellStyle();
+
             Tabs = new TabControl();
             admin = new TabPage();
             AddColumnButton = new Button();
@@ -57,6 +65,23 @@ namespace week_5_assignment
             facebookLinkTextBox = new TextBox();
             clearButton = new Button();
             submitButton = new Button();
+            listTab = new TabPage();
+            listRemoveButton = new Button();
+            listDivider = new Panel();
+            listFormCard = new Panel();
+            listIdLbl = new Label();
+            listIdTextBox = new TextBox();
+            listNameLbl = new Label();
+            listNameTextBox = new TextBox();
+            listEmailLbl = new Label();
+            listEmailTextBox = new TextBox();
+            listFbLinkLbl = new Label();
+            listFbLinkTextBox = new TextBox();
+            listClearButton = new Button();
+            listAddButton = new Button();
+            listGridPanel = new Panel();
+            listDataGridView = new DataGridView();
+
             Tabs.SuspendLayout();
             admin.SuspendLayout();
             panel1.SuspendLayout();
@@ -65,12 +90,17 @@ namespace week_5_assignment
             headerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             user.SuspendLayout();
+            listTab.SuspendLayout();
+            listFormCard.SuspendLayout();
+            listGridPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)listDataGridView).BeginInit();
             SuspendLayout();
             //
             // Tabs
             //
             Tabs.Controls.Add(admin);
             Tabs.Controls.Add(user);
+            Tabs.Controls.Add(listTab);
             Tabs.Dock = DockStyle.Fill;
             Tabs.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             Tabs.ItemSize = new Size(120, 48);
@@ -400,6 +430,236 @@ namespace week_5_assignment
             submitButton.UseVisualStyleBackColor = false;
             submitButton.Click += SubmitButton_Click;
             //
+            // ── LIST TAB ─────────────────────────────────────────────────────────
+            //
+            // listTab  (light gray background, mirrors admin layout)
+            //
+            listTab.BackColor = Color.FromArgb(242, 243, 247);
+            listTab.Controls.Add(listRemoveButton);
+            listTab.Controls.Add(listDivider);
+            listTab.Controls.Add(listFormCard);
+            listTab.Controls.Add(listGridPanel);
+            listTab.Location = new Point(4, 56);
+            listTab.Margin = new Padding(0);
+            listTab.Name = "listTab";
+            listTab.Size = new Size(1912, 931);
+            listTab.TabIndex = 2;
+            listTab.Text = "List";
+            listTab.UseVisualStyleBackColor = false;
+            //
+            // listRemoveButton  (dark red — destructive)
+            //
+            listRemoveButton.BackColor = Color.FromArgb(160, 30, 30);
+            listRemoveButton.FlatStyle = FlatStyle.Flat;
+            listRemoveButton.FlatAppearance.BorderColor = Color.FromArgb(120, 20, 20);
+            listRemoveButton.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            listRemoveButton.ForeColor = Color.White;
+            listRemoveButton.Location = new Point(20, 18);
+            listRemoveButton.Margin = new Padding(0);
+            listRemoveButton.Name = "listRemoveButton";
+            listRemoveButton.Size = new Size(130, 60);
+            listRemoveButton.TabIndex = 0;
+            listRemoveButton.Text = "Remove Row";
+            listRemoveButton.UseVisualStyleBackColor = false;
+            listRemoveButton.Click += ListRemoveButton_Click;
+            adminToolTip.SetToolTip(listRemoveButton, "Remove selected rows from the list (with confirmation)");
+            //
+            // listDivider  (maroon Panel separator)
+            //
+            listDivider.BackColor = Color.FromArgb(120, 0, 30);
+            listDivider.Location = new Point(0, 96);
+            listDivider.Name = "listDivider";
+            listDivider.Size = new Size(1912, 3);
+            listDivider.TabIndex = 1;
+            //
+            // listFormCard  (white card — input form on the left)
+            //
+            listFormCard.BackColor = Color.White;
+            listFormCard.BorderStyle = BorderStyle.FixedSingle;
+            listFormCard.Controls.Add(listIdLbl);
+            listFormCard.Controls.Add(listIdTextBox);
+            listFormCard.Controls.Add(listNameLbl);
+            listFormCard.Controls.Add(listNameTextBox);
+            listFormCard.Controls.Add(listEmailLbl);
+            listFormCard.Controls.Add(listEmailTextBox);
+            listFormCard.Controls.Add(listFbLinkLbl);
+            listFormCard.Controls.Add(listFbLinkTextBox);
+            listFormCard.Controls.Add(listClearButton);
+            listFormCard.Controls.Add(listAddButton);
+            listFormCard.Location = new Point(20, 115);
+            listFormCard.Name = "listFormCard";
+            listFormCard.Size = new Size(580, 510);
+            listFormCard.TabIndex = 2;
+            //
+            // listIdLbl
+            //
+            listIdLbl.AutoSize = true;
+            listIdLbl.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            listIdLbl.ForeColor = Color.FromArgb(120, 0, 30);
+            listIdLbl.Location = new Point(50, 35);
+            listIdLbl.Name = "listIdLbl";
+            listIdLbl.TabIndex = 0;
+            listIdLbl.Text = "Student ID:";
+            //
+            // listIdTextBox
+            //
+            listIdTextBox.BorderStyle = BorderStyle.FixedSingle;
+            listIdTextBox.Font = new Font("Segoe UI", 12F);
+            listIdTextBox.Location = new Point(50, 68);
+            listIdTextBox.Name = "listIdTextBox";
+            listIdTextBox.PlaceholderText = "24-4339-705";
+            listIdTextBox.Size = new Size(480, 34);
+            listIdTextBox.TabIndex = 1;
+            listIdTextBox.WordWrap = false;
+            //
+            // listNameLbl
+            //
+            listNameLbl.AutoSize = true;
+            listNameLbl.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            listNameLbl.ForeColor = Color.FromArgb(120, 0, 30);
+            listNameLbl.Location = new Point(50, 132);
+            listNameLbl.Name = "listNameLbl";
+            listNameLbl.TabIndex = 2;
+            listNameLbl.Text = "Student Name:";
+            //
+            // listNameTextBox
+            //
+            listNameTextBox.BorderStyle = BorderStyle.FixedSingle;
+            listNameTextBox.Font = new Font("Segoe UI", 12F);
+            listNameTextBox.Location = new Point(50, 165);
+            listNameTextBox.Name = "listNameTextBox";
+            listNameTextBox.PlaceholderText = "Tabotabo, Adrian Seth M.";
+            listNameTextBox.Size = new Size(480, 34);
+            listNameTextBox.TabIndex = 3;
+            listNameTextBox.WordWrap = false;
+            //
+            // listEmailLbl
+            //
+            listEmailLbl.AutoSize = true;
+            listEmailLbl.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            listEmailLbl.ForeColor = Color.FromArgb(120, 0, 30);
+            listEmailLbl.Location = new Point(50, 229);
+            listEmailLbl.Name = "listEmailLbl";
+            listEmailLbl.TabIndex = 4;
+            listEmailLbl.Text = "Institutional Email:";
+            //
+            // listEmailTextBox
+            //
+            listEmailTextBox.BorderStyle = BorderStyle.FixedSingle;
+            listEmailTextBox.Font = new Font("Segoe UI", 12F);
+            listEmailTextBox.Location = new Point(50, 262);
+            listEmailTextBox.Name = "listEmailTextBox";
+            listEmailTextBox.PlaceholderText = "adrianseth.tabotabo@cit.edu";
+            listEmailTextBox.Size = new Size(480, 34);
+            listEmailTextBox.TabIndex = 5;
+            listEmailTextBox.WordWrap = false;
+            //
+            // listFbLinkLbl
+            //
+            listFbLinkLbl.AutoSize = true;
+            listFbLinkLbl.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            listFbLinkLbl.ForeColor = Color.FromArgb(120, 0, 30);
+            listFbLinkLbl.Location = new Point(50, 326);
+            listFbLinkLbl.Name = "listFbLinkLbl";
+            listFbLinkLbl.TabIndex = 6;
+            listFbLinkLbl.Text = "Facebook Link:";
+            //
+            // listFbLinkTextBox
+            //
+            listFbLinkTextBox.BorderStyle = BorderStyle.FixedSingle;
+            listFbLinkTextBox.Font = new Font("Segoe UI", 12F);
+            listFbLinkTextBox.Location = new Point(50, 359);
+            listFbLinkTextBox.Name = "listFbLinkTextBox";
+            listFbLinkTextBox.PlaceholderText = "https://facebook.com/dreeyanzz";
+            listFbLinkTextBox.Size = new Size(480, 34);
+            listFbLinkTextBox.TabIndex = 7;
+            listFbLinkTextBox.WordWrap = false;
+            //
+            // listClearButton  (secondary — outlined maroon)
+            //
+            listClearButton.BackColor = Color.White;
+            listClearButton.FlatStyle = FlatStyle.Flat;
+            listClearButton.FlatAppearance.BorderColor = Color.FromArgb(120, 0, 30);
+            listClearButton.FlatAppearance.BorderSize = 2;
+            listClearButton.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            listClearButton.ForeColor = Color.FromArgb(120, 0, 30);
+            listClearButton.Location = new Point(100, 428);
+            listClearButton.Name = "listClearButton";
+            listClearButton.Size = new Size(165, 50);
+            listClearButton.TabIndex = 8;
+            listClearButton.Text = "Clear";
+            listClearButton.UseVisualStyleBackColor = false;
+            listClearButton.Click += ListClearButton_Click;
+            //
+            // listAddButton  (primary — filled maroon)
+            //
+            listAddButton.BackColor = Color.FromArgb(120, 0, 30);
+            listAddButton.FlatStyle = FlatStyle.Flat;
+            listAddButton.FlatAppearance.BorderColor = Color.FromArgb(80, 0, 20);
+            listAddButton.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            listAddButton.ForeColor = Color.White;
+            listAddButton.Location = new Point(315, 428);
+            listAddButton.Name = "listAddButton";
+            listAddButton.Size = new Size(165, 50);
+            listAddButton.TabIndex = 9;
+            listAddButton.Text = "Add to List";
+            listAddButton.UseVisualStyleBackColor = false;
+            listAddButton.Click += ListAddButton_Click;
+            adminToolTip.SetToolTip(listAddButton, "Validate and add student to the list");
+            //
+            // listGridPanel  (DataGridView container — right side)
+            //
+            listGridPanel.BorderStyle = BorderStyle.FixedSingle;
+            listGridPanel.Controls.Add(listDataGridView);
+            listGridPanel.Location = new Point(620, 115);
+            listGridPanel.Margin = new Padding(0);
+            listGridPanel.Name = "listGridPanel";
+            listGridPanel.Size = new Size(1272, 800);
+            listGridPanel.TabIndex = 3;
+            //
+            // listDataGridView  (manually populated — no DataSource binding)
+            //
+            listDataGridView.AllowUserToAddRows = false;
+            listDataGridView.AllowUserToOrderColumns = true;
+            listDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            listDataGridView.BackgroundColor = Color.White;
+            listDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            listDataGridView.EnableHeadersVisualStyles = false;
+            listDataGridView.GridColor = Color.FromArgb(220, 220, 220);
+            listDataGridView.ReadOnly = true;
+            listDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            listHeaderStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            listHeaderStyle.BackColor = Color.FromArgb(120, 0, 30);
+            listHeaderStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            listHeaderStyle.ForeColor = Color.White;
+            listHeaderStyle.SelectionBackColor = Color.FromArgb(120, 0, 30);
+            listHeaderStyle.SelectionForeColor = Color.White;
+            listDataGridView.ColumnHeadersDefaultCellStyle = listHeaderStyle;
+            listAltRowStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            listAltRowStyle.BackColor = Color.FromArgb(255, 245, 248);
+            listAltRowStyle.ForeColor = Color.Black;
+            listAltRowStyle.SelectionBackColor = Color.FromArgb(120, 0, 30);
+            listAltRowStyle.SelectionForeColor = Color.White;
+            listDataGridView.AlternatingRowsDefaultCellStyle = listAltRowStyle;
+            listDefaultStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            listDefaultStyle.BackColor = Color.White;
+            listDefaultStyle.Font = new Font("Segoe UI", 9F);
+            listDefaultStyle.ForeColor = SystemColors.ControlText;
+            listDefaultStyle.SelectionBackColor = Color.FromArgb(120, 0, 30);
+            listDefaultStyle.SelectionForeColor = Color.White;
+            listDefaultStyle.WrapMode = DataGridViewTriState.False;
+            listDataGridView.DefaultCellStyle = listDefaultStyle;
+            listDataGridView.Dock = DockStyle.Fill;
+            listDataGridView.Location = new Point(0, 0);
+            listDataGridView.Name = "listDataGridView";
+            listDataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(120, 0, 30);
+            listDataGridView.RowHeadersDefaultCellStyle.ForeColor = Color.White;
+            listDataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(80, 0, 20);
+            listDataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = Color.White;
+            listDataGridView.RowHeadersWidth = 51;
+            listDataGridView.Size = new Size(1270, 798);
+            listDataGridView.TabIndex = 0;
+            //
             // Window
             //
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -420,6 +680,11 @@ namespace week_5_assignment
             headerPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             user.ResumeLayout(false);
+            listTab.ResumeLayout(false);
+            listFormCard.ResumeLayout(false);
+            listFormCard.PerformLayout();
+            listGridPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)listDataGridView).EndInit();
             ResumeLayout(false);
         }
 
@@ -428,6 +693,7 @@ namespace week_5_assignment
         private TabControl Tabs;
         private TabPage admin;
         private TabPage user;
+        private TabPage listTab;
         private Button AddColumnButton;
         private Button AddRowButton;
         private Button RemoveColumnButton;
@@ -449,6 +715,21 @@ namespace week_5_assignment
         private TextBox facebookLinkTextBox;
         private Button clearButton;
         private Button submitButton;
+        private Button listRemoveButton;
+        private Panel listDivider;
+        private Panel listFormCard;
+        private Label listIdLbl;
+        private TextBox listIdTextBox;
+        private Label listNameLbl;
+        private TextBox listNameTextBox;
+        private Label listEmailLbl;
+        private TextBox listEmailTextBox;
+        private Label listFbLinkLbl;
+        private TextBox listFbLinkTextBox;
+        private Button listClearButton;
+        private Button listAddButton;
+        private Panel listGridPanel;
+        private DataGridView listDataGridView;
         private ToolTip adminToolTip;
     }
 }
