@@ -23,8 +23,8 @@ The solution file is `week-5-assignment.slnx` (new XML-based solution format). T
 
 The app is a **Student Management System** GUI built with Windows Forms. It has two tabs inside the main `Window` form:
 
-- **Admin tab** — A dynamic `DataGridView` backed by an in-memory `DataTable` (`Window.dTable`, private). Starts with predefined columns: `id`, `Student ID`, `Student Name`, `Institutional Email`, `Facebook Link`. Users can add extra columns (via `AddColumnForm` dialog), add blank rows, or remove selected rows. Right-clicking a cell opens a context menu for per-cell alignment changes or clearing cell contents.
-- **User tab** — A student registration form. On submit, validates Student ID (non-empty), Student Name (non-empty), and Institutional Email (must end with `@cit.edu`), then appends a row to the shared `DataTable` and clears the inputs.
+- **Admin tab** — A dynamic `DataGridView` backed by an in-memory `DataTable` (`Window.dTable`, private). Starts with predefined columns: `id`, `Student ID`, `Student Name`, `Institutional Email`, `Facebook Link`. Users can add extra columns (via `AddColumnForm` dialog), add blank rows, or remove selected rows with a Yes/No confirmation. Right-clicking a cell opens a context menu for per-cell alignment changes or clearing cell contents. `AllowUserToAddRows = false` prevents the default `*` new-row entry.
+- **User tab** — A student registration form with a `formCard` white panel on a light-gray background. On submit, validates: Student ID non-empty and matching `YY-NNNN-NNN` format, Student Name non-empty, and Institutional Email ending with `@cit.edu`. On success, appends a row to the shared `DataTable` and clears the inputs.
 
 ### Form structure
 
@@ -38,20 +38,30 @@ The app is a **Student Management System** GUI built with Windows Forms. It has 
 ### Key patterns
 
 - `AddColumnForm` takes a `DataTable` directly (not the parent `Window`), keeping it decoupled from the main form.
-- `ErrorForm` follows the standard designer pattern — all controls are declared as fields and initialized in `InitializeComponent()` in `ErrorForm.Designer.cs`.
-- The `DataGridView` is data-bound to `dTable` via `dataGridView.DataSource = dTable` — adding/removing columns or rows on the `DataTable` automatically reflects in the grid.
+- `ErrorForm` follows the standard designer pattern — all controls declared as fields and initialized in `InitializeComponent()` inside `ErrorForm.Designer.cs`.
+- The `DataGridView` is data-bound via `dataGridView.DataSource = dTable` — adding/removing columns or rows on the `DataTable` automatically reflects in the grid.
+- The `id` column is marked `ReadOnly = true` on the `DataColumn`, making it non-editable in the grid.
 - The `ContextMenuStrip` created on right-click disposes itself via `menu.Closed += (_, _) => menu.Dispose()` to avoid accumulating instances.
+- `Tabs_SelectedIndexChanged` sets `AcceptButton = submitButton` only when the User tab is active (null on Admin tab), so Enter key submits the form on the correct tab.
+- Student ID format is validated without Regex: `Split('-')` into three parts and `All(char.IsDigit)` with length checks `[2, 4, 3]`.
+- `adminToolTip` is a `ToolTip` component held in `components` (`IContainer`) for proper disposal; tooltips are set on the three admin toolbar buttons.
 
 ### UI / Branding
 
 CIT-U brand colors used throughout (defined inline in `Window.Designer.cs`):
-- Maroon `Color.FromArgb(120, 0, 30)` — primary (buttons, header, labels, divider, DataGridView headers/selection)
+- Maroon `Color.FromArgb(120, 0, 30)` — primary (buttons, header, labels, divider, DataGridView column headers, row headers, selection highlight)
 - Dark red `Color.FromArgb(160, 30, 30)` — destructive actions (Remove Row button)
 - Gold `Color.FromArgb(255, 215, 100)` — accent (system title label in header)
 
-**User tab layout:** A `headerPanel` (maroon, `DockStyle.Top`, 165px tall) holds the CIT-U seal (`pictureBox1`), school name (`citLbl`, white), and system title (`titleLbl`, gold). Below it, four form fields are centered at x=616, width=680 (center of a 1912px tab), with Submit (filled maroon) and Clear (outlined maroon) buttons centered at y=650.
+**Shared header:** A `headerPanel` (maroon, `DockStyle.Top`, 165px tall) sits above the `TabControl` on both tabs. It holds the CIT-U seal (`pictureBox1`), school name (`citLbl`, white 20pt Bold), and system title (`titleLbl`, gold 14pt).
 
-**Admin tab:** `Divider` is a `Panel` (3px tall, maroon) acting as a horizontal rule between the toolbar and the DataGridView. All three toolbar buttons use `FlatStyle.Flat` with colored backgrounds.
+**User tab layout:** Background is light gray `Color.FromArgb(242, 243, 247)`. A white `formCard` Panel (`BorderStyle.FixedSingle`) groups the four labeled input fields and Submit/Clear buttons in a centered card. Submit is filled maroon; Clear is outlined maroon.
+
+**Admin tab:** `Divider` is a `Panel` (3px tall, maroon) between the toolbar and the DataGridView. Toolbar buttons use `FlatStyle.Flat` with colored backgrounds.
+
+**DataGridView styling:** White background, light-gray `(220, 220, 220)` grid lines, maroon column header style (`EnableHeadersVisualStyles = false`), maroon row header cell style (white text).
+
+**Dialogs:** `AddColumnForm` and `ErrorForm` match the CIT-U palette — white background, maroon label/button, `FormBorderStyle.FixedDialog`, `StartPosition.CenterParent`.
 
 ### Resources
 
