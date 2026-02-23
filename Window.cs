@@ -1,4 +1,4 @@
-using System.Data;
+﻿using System.Data;
 
 namespace week_5_assignment
 {
@@ -34,8 +34,8 @@ namespace week_5_assignment
 
         private void RemoveRow_Click(object sender, EventArgs e)
         {
-            var rowIndices = dataGridView.SelectedCells
-                .Cast<DataGridViewCell>()
+            var rowIndices = dataGridView
+                .SelectedCells.Cast<DataGridViewCell>()
                 .Select(c => c.RowIndex)
                 .Distinct()
                 .OrderByDescending(i => i)
@@ -56,7 +56,8 @@ namespace week_5_assignment
                 if (!dataGridView.Rows[index: e.RowIndex].Cells[index: e.ColumnIndex].Selected)
                 {
                     dataGridView.ClearSelection();
-                    dataGridView.Rows[index: e.RowIndex].Cells[index: e.ColumnIndex].Selected = true;
+                    dataGridView.Rows[index: e.RowIndex].Cells[index: e.ColumnIndex].Selected =
+                        true;
                 }
 
                 ContextMenuStrip menu = new();
@@ -123,7 +124,10 @@ namespace week_5_assignment
                 return;
             }
 
-            if (string.IsNullOrEmpty(email) || !email.EndsWith("@cit.edu", StringComparison.OrdinalIgnoreCase))
+            if (
+                string.IsNullOrEmpty(email)
+                || !email.EndsWith("@cit.edu", StringComparison.OrdinalIgnoreCase)
+            )
             {
                 new ErrorForm("Institutional Email must be a valid @cit.edu address.").ShowDialog();
                 return;
