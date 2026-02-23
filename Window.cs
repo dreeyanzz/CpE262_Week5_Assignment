@@ -74,11 +74,17 @@ namespace week_5_assignment
                         if (!selectedCell.ReadOnly)
                             selectedCell.Value = DBNull.Value;
                 };
-                menu.Items.Add(new ToolStripSeparator());
-                menu.Items.Add(deleteMenu);
+                menu.Items.Add(value: new ToolStripSeparator());
+                menu.Items.Add(value: deleteMenu);
 
-                menu.Show(Cursor.Position);
+                menu.Show(screenLocation: Cursor.Position);
             }
         }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
