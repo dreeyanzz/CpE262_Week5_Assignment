@@ -37,7 +37,7 @@ namespace week_5_assignment
             // errorIcon
             //
             errorIcon.Image = SystemIcons.Error.ToBitmap();
-            errorIcon.Location = new Point(20, 25);
+            errorIcon.Location = new Point(24, 30);
             errorIcon.Name = "errorIcon";
             errorIcon.Size = new Size(32, 32);
             errorIcon.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -46,20 +46,25 @@ namespace week_5_assignment
             //
             // errLbl
             //
-            errLbl.Location = new Point(65, 20);
+            errLbl.Font = new Font("Segoe UI", 10F);
+            errLbl.ForeColor = Color.FromArgb(40, 40, 40);
+            errLbl.Location = new Point(68, 24);
             errLbl.Name = "errLbl";
-            errLbl.Size = new Size(300, 60);
+            errLbl.Size = new Size(290, 50);
             errLbl.TabIndex = 1;
-            errLbl.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
             errLbl.TextAlign = ContentAlignment.MiddleLeft;
             //
-            // okBtn
+            // okBtn  (primary — filled maroon)
             //
-            okBtn.BackColor = Color.FromArgb(240, 240, 240);
+            okBtn.BackColor = Color.FromArgb(120, 0, 30);
             okBtn.DialogResult = DialogResult.OK;
-            okBtn.Location = new Point(290, 90);
+            okBtn.FlatStyle = FlatStyle.Flat;
+            okBtn.FlatAppearance.BorderColor = Color.FromArgb(80, 0, 20);
+            okBtn.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            okBtn.ForeColor = Color.White;
+            okBtn.Location = new Point(150, 88);
             okBtn.Name = "okBtn";
-            okBtn.Size = new Size(80, 30);
+            okBtn.Size = new Size(100, 36);
             okBtn.TabIndex = 2;
             okBtn.Text = "OK";
             okBtn.UseVisualStyleBackColor = false;
@@ -70,7 +75,7 @@ namespace week_5_assignment
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(400, 140);
+            ClientSize = new Size(400, 148);
             Controls.Add(errorIcon);
             Controls.Add(errLbl);
             Controls.Add(okBtn);
@@ -78,7 +83,6 @@ namespace week_5_assignment
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "ErrorForm";
-            Padding = new Padding(20);
             StartPosition = FormStartPosition.CenterParent;
             Text = "Application Error";
             ((System.ComponentModel.ISupportInitialize)errorIcon).EndInit();

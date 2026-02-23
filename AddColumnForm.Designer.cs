@@ -1,4 +1,4 @@
-﻿namespace week_5_assignment
+namespace week_5_assignment
 {
     partial class AddColumnForm
     {
@@ -28,56 +28,69 @@
         /// </summary>
         private void InitializeComponent()
         {
-            addColBtn = new Button();
-            colNameInput = new TextBox();
             colNameInputLbl = new Label();
+            colNameInput = new TextBox();
+            addColBtn = new Button();
             SuspendLayout();
-            // 
-            // addColBtn
-            // 
-            addColBtn.Location = new Point(251, 92);
-            addColBtn.Name = "addColBtn";
-            addColBtn.Size = new Size(160, 56);
-            addColBtn.TabIndex = 0;
-            addColBtn.Text = "Add Column";
-            addColBtn.UseVisualStyleBackColor = true;
-            addColBtn.Click += AddColBtn_Click;
-            // 
-            // colNameInput
-            // 
-            colNameInput.Location = new Point(149, 31);
-            colNameInput.Name = "colNameInput";
-            colNameInput.Size = new Size(445, 27);
-            colNameInput.TabIndex = 1;
-            // 
+            //
             // colNameInputLbl
-            // 
+            //
             colNameInputLbl.AutoSize = true;
-            colNameInputLbl.Location = new Point(39, 34);
+            colNameInputLbl.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            colNameInputLbl.ForeColor = Color.FromArgb(120, 0, 30);
+            colNameInputLbl.Location = new Point(30, 30);
             colNameInputLbl.Name = "colNameInputLbl";
-            colNameInputLbl.Size = new Size(104, 20);
-            colNameInputLbl.TabIndex = 2;
+            colNameInputLbl.TabIndex = 0;
             colNameInputLbl.Text = "Column name:";
-            // 
+            //
+            // colNameInput
+            //
+            colNameInput.BorderStyle = BorderStyle.FixedSingle;
+            colNameInput.Font = new Font("Segoe UI", 12F);
+            colNameInput.Location = new Point(30, 62);
+            colNameInput.Name = "colNameInput";
+            colNameInput.Size = new Size(420, 34);
+            colNameInput.TabIndex = 1;
+            //
+            // addColBtn  (primary — filled maroon)
+            //
+            addColBtn.BackColor = Color.FromArgb(120, 0, 30);
+            addColBtn.FlatStyle = FlatStyle.Flat;
+            addColBtn.FlatAppearance.BorderColor = Color.FromArgb(80, 0, 20);
+            addColBtn.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            addColBtn.ForeColor = Color.White;
+            addColBtn.Location = new Point(130, 116);
+            addColBtn.Name = "addColBtn";
+            addColBtn.Size = new Size(220, 45);
+            addColBtn.TabIndex = 2;
+            addColBtn.Text = "Add Column";
+            addColBtn.UseVisualStyleBackColor = false;
+            addColBtn.Click += AddColBtn_Click;
+            //
             // AddColumnForm
-            // 
+            //
+            AcceptButton = addColBtn;
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(653, 172);
+            BackColor = Color.White;
+            ClientSize = new Size(480, 185);
             Controls.Add(colNameInputLbl);
             Controls.Add(colNameInput);
             Controls.Add(addColBtn);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "AddColumnForm";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Add column";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Add Column";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Button addColBtn;
-        private TextBox colNameInput;
         private Label colNameInputLbl;
+        private TextBox colNameInput;
+        private Button addColBtn;
     }
 }

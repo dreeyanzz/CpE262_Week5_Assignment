@@ -44,6 +44,7 @@ namespace week_5_assignment
             pictureBox1 = new PictureBox();
             citLbl = new Label();
             titleLbl = new Label();
+            formCard = new Panel();
             studentIdLbl = new Label();
             studentIdTextBox = new TextBox();
             studentNameLabel = new Label();
@@ -58,6 +59,7 @@ namespace week_5_assignment
             admin.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
+            formCard.SuspendLayout();
             headerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             user.SuspendLayout();
@@ -141,7 +143,7 @@ namespace week_5_assignment
             RemoveColumnButton.UseVisualStyleBackColor = false;
             RemoveColumnButton.Click += RemoveRow_Click;
             //
-            // Divider  (maroon Panel replacing the old dash-string Label)
+            // Divider  (maroon Panel separator)
             //
             Divider.BackColor = Color.FromArgb(120, 0, 30);
             Divider.Location = new Point(0, 96);
@@ -163,8 +165,10 @@ namespace week_5_assignment
             //
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView.BackgroundColor = Color.White;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.EnableHeadersVisualStyles = false;
+            dataGridView.GridColor = Color.FromArgb(220, 220, 220);
             dgvHeaderStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvHeaderStyle.BackColor = Color.FromArgb(120, 0, 30);
             dgvHeaderStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -179,7 +183,7 @@ namespace week_5_assignment
             dgvAltRowStyle.SelectionForeColor = Color.White;
             dataGridView.AlternatingRowsDefaultCellStyle = dgvAltRowStyle;
             dgvDefaultStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgvDefaultStyle.BackColor = SystemColors.Window;
+            dgvDefaultStyle.BackColor = Color.White;
             dgvDefaultStyle.Font = new Font("Segoe UI", 9F);
             dgvDefaultStyle.ForeColor = SystemColors.ControlText;
             dgvDefaultStyle.SelectionBackColor = Color.FromArgb(120, 0, 30);
@@ -194,20 +198,11 @@ namespace week_5_assignment
             dataGridView.TabIndex = 0;
             dataGridView.CellMouseDown += DataGridView_CellMouseDown;
             //
-            // user
+            // user  (light gray background so the white card stands out)
             //
-            user.BackColor = Color.White;
+            user.BackColor = Color.FromArgb(242, 243, 247);
             user.Controls.Add(headerPanel);
-            user.Controls.Add(studentIdLbl);
-            user.Controls.Add(studentIdTextBox);
-            user.Controls.Add(studentNameLabel);
-            user.Controls.Add(studentNameTextBox);
-            user.Controls.Add(institutionalEmailLbl);
-            user.Controls.Add(institutionalEmailTextBox);
-            user.Controls.Add(fbLinkLabel);
-            user.Controls.Add(facebookLinkTextBox);
-            user.Controls.Add(clearButton);
-            user.Controls.Add(submitButton);
+            user.Controls.Add(formCard);
             user.Location = new Point(4, 56);
             user.Margin = new Padding(0);
             user.Name = "user";
@@ -260,23 +255,43 @@ namespace week_5_assignment
             titleLbl.TabIndex = 2;
             titleLbl.Text = "Student Management System";
             //
-            // studentIdLbl
+            // formCard  (white card panel, centered below the header)
+            //
+            formCard.BackColor = Color.White;
+            formCard.BorderStyle = BorderStyle.FixedSingle;
+            formCard.Controls.Add(studentIdLbl);
+            formCard.Controls.Add(studentIdTextBox);
+            formCard.Controls.Add(studentNameLabel);
+            formCard.Controls.Add(studentNameTextBox);
+            formCard.Controls.Add(institutionalEmailLbl);
+            formCard.Controls.Add(institutionalEmailTextBox);
+            formCard.Controls.Add(fbLinkLabel);
+            formCard.Controls.Add(facebookLinkTextBox);
+            formCard.Controls.Add(clearButton);
+            formCard.Controls.Add(submitButton);
+            formCard.Location = new Point(576, 286);
+            formCard.Name = "formCard";
+            formCard.Size = new Size(760, 524);
+            formCard.TabIndex = 15;
+            //
+            // studentIdLbl  (relative to formCard)
             //
             studentIdLbl.AutoSize = true;
             studentIdLbl.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             studentIdLbl.ForeColor = Color.FromArgb(120, 0, 30);
-            studentIdLbl.Location = new Point(616, 185);
+            studentIdLbl.Location = new Point(50, 40);
             studentIdLbl.Name = "studentIdLbl";
             studentIdLbl.TabIndex = 1;
             studentIdLbl.Text = "Student ID:";
             //
             // studentIdTextBox
             //
+            studentIdTextBox.BorderStyle = BorderStyle.FixedSingle;
             studentIdTextBox.Font = new Font("Segoe UI", 12F);
-            studentIdTextBox.Location = new Point(616, 219);
+            studentIdTextBox.Location = new Point(50, 73);
             studentIdTextBox.Name = "studentIdTextBox";
             studentIdTextBox.PlaceholderText = "(ex. 24-4339-705)";
-            studentIdTextBox.Size = new Size(680, 34);
+            studentIdTextBox.Size = new Size(660, 34);
             studentIdTextBox.TabIndex = 2;
             studentIdTextBox.WordWrap = false;
             //
@@ -285,18 +300,19 @@ namespace week_5_assignment
             studentNameLabel.AutoSize = true;
             studentNameLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             studentNameLabel.ForeColor = Color.FromArgb(120, 0, 30);
-            studentNameLabel.Location = new Point(616, 305);
+            studentNameLabel.Location = new Point(50, 137);
             studentNameLabel.Name = "studentNameLabel";
             studentNameLabel.TabIndex = 3;
             studentNameLabel.Text = "Student Name:";
             //
             // studentNameTextBox
             //
+            studentNameTextBox.BorderStyle = BorderStyle.FixedSingle;
             studentNameTextBox.Font = new Font("Segoe UI", 12F);
-            studentNameTextBox.Location = new Point(616, 339);
+            studentNameTextBox.Location = new Point(50, 170);
             studentNameTextBox.Name = "studentNameTextBox";
             studentNameTextBox.PlaceholderText = "(ex. Tabotabo, Adrian Seth M.)";
-            studentNameTextBox.Size = new Size(680, 34);
+            studentNameTextBox.Size = new Size(660, 34);
             studentNameTextBox.TabIndex = 4;
             studentNameTextBox.WordWrap = false;
             //
@@ -305,18 +321,19 @@ namespace week_5_assignment
             institutionalEmailLbl.AutoSize = true;
             institutionalEmailLbl.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             institutionalEmailLbl.ForeColor = Color.FromArgb(120, 0, 30);
-            institutionalEmailLbl.Location = new Point(616, 425);
+            institutionalEmailLbl.Location = new Point(50, 234);
             institutionalEmailLbl.Name = "institutionalEmailLbl";
             institutionalEmailLbl.TabIndex = 5;
             institutionalEmailLbl.Text = "Institutional Email:";
             //
             // institutionalEmailTextBox
             //
+            institutionalEmailTextBox.BorderStyle = BorderStyle.FixedSingle;
             institutionalEmailTextBox.Font = new Font("Segoe UI", 12F);
-            institutionalEmailTextBox.Location = new Point(616, 459);
+            institutionalEmailTextBox.Location = new Point(50, 267);
             institutionalEmailTextBox.Name = "institutionalEmailTextBox";
             institutionalEmailTextBox.PlaceholderText = "(ex. adrianseth.tabotabo@cit.edu)";
-            institutionalEmailTextBox.Size = new Size(680, 34);
+            institutionalEmailTextBox.Size = new Size(660, 34);
             institutionalEmailTextBox.TabIndex = 6;
             institutionalEmailTextBox.WordWrap = false;
             //
@@ -325,18 +342,19 @@ namespace week_5_assignment
             fbLinkLabel.AutoSize = true;
             fbLinkLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             fbLinkLabel.ForeColor = Color.FromArgb(120, 0, 30);
-            fbLinkLabel.Location = new Point(616, 545);
+            fbLinkLabel.Location = new Point(50, 331);
             fbLinkLabel.Name = "fbLinkLabel";
             fbLinkLabel.TabIndex = 7;
             fbLinkLabel.Text = "Facebook Link:";
             //
             // facebookLinkTextBox
             //
+            facebookLinkTextBox.BorderStyle = BorderStyle.FixedSingle;
             facebookLinkTextBox.Font = new Font("Segoe UI", 12F);
-            facebookLinkTextBox.Location = new Point(616, 579);
+            facebookLinkTextBox.Location = new Point(50, 364);
             facebookLinkTextBox.Name = "facebookLinkTextBox";
             facebookLinkTextBox.PlaceholderText = "(ex. https://facebook.com/dreeyanzz)";
-            facebookLinkTextBox.Size = new Size(680, 34);
+            facebookLinkTextBox.Size = new Size(660, 34);
             facebookLinkTextBox.TabIndex = 8;
             facebookLinkTextBox.WordWrap = false;
             //
@@ -348,7 +366,7 @@ namespace week_5_assignment
             clearButton.FlatAppearance.BorderSize = 2;
             clearButton.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             clearButton.ForeColor = Color.FromArgb(120, 0, 30);
-            clearButton.Location = new Point(741, 650);
+            clearButton.Location = new Point(165, 428);
             clearButton.Name = "clearButton";
             clearButton.Size = new Size(200, 55);
             clearButton.TabIndex = 9;
@@ -363,7 +381,7 @@ namespace week_5_assignment
             submitButton.FlatAppearance.BorderColor = Color.FromArgb(80, 0, 20);
             submitButton.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             submitButton.ForeColor = Color.White;
-            submitButton.Location = new Point(971, 650);
+            submitButton.Location = new Point(395, 428);
             submitButton.Name = "submitButton";
             submitButton.Size = new Size(200, 55);
             submitButton.TabIndex = 10;
@@ -385,11 +403,12 @@ namespace week_5_assignment
             admin.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
+            formCard.ResumeLayout(false);
+            formCard.PerformLayout();
             headerPanel.ResumeLayout(false);
             headerPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             user.ResumeLayout(false);
-            user.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -408,6 +427,7 @@ namespace week_5_assignment
         private PictureBox pictureBox1;
         private Label citLbl;
         private Label titleLbl;
+        private Panel formCard;
         private Label studentIdLbl;
         private TextBox studentIdTextBox;
         private Label studentNameLabel;
