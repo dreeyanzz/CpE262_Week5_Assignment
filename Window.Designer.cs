@@ -45,9 +45,9 @@
             pictureBox1 = new PictureBox();
             submitButton = new Button();
             clearButton = new Button();
-            textBox2 = new TextBox();
+            facebookLinkTextBox = new TextBox();
             fbLinkLabel = new Label();
-            textBox1 = new TextBox();
+            institutionalEmailTextBox = new TextBox();
             institutionalEmailLbl = new Label();
             studentNameTextBox = new TextBox();
             studentNameLabel = new Label();
@@ -98,6 +98,7 @@
             RemoveColumnButton.TabIndex = 4;
             RemoveColumnButton.Text = "Remove Row";
             RemoveColumnButton.UseVisualStyleBackColor = true;
+            RemoveColumnButton.Click += RemoveRow_Click;
             // 
             // AddRowButton
             // 
@@ -173,9 +174,9 @@
             user.Controls.Add(pictureBox1);
             user.Controls.Add(submitButton);
             user.Controls.Add(clearButton);
-            user.Controls.Add(textBox2);
+            user.Controls.Add(facebookLinkTextBox);
             user.Controls.Add(fbLinkLabel);
-            user.Controls.Add(textBox1);
+            user.Controls.Add(institutionalEmailTextBox);
             user.Controls.Add(institutionalEmailLbl);
             user.Controls.Add(studentNameTextBox);
             user.Controls.Add(studentNameLabel);
@@ -227,6 +228,7 @@
             submitButton.TabIndex = 10;
             submitButton.Text = "Submit";
             submitButton.UseVisualStyleBackColor = true;
+            submitButton.Click += SubmitButton_Click;
             // 
             // clearButton
             // 
@@ -238,16 +240,16 @@
             clearButton.Text = "Clear Inputs";
             clearButton.UseVisualStyleBackColor = true;
             clearButton.Click += clearButton_Click;
-            // 
-            // textBox2
-            // 
-            textBox2.Font = new Font("Segoe UI", 12F);
-            textBox2.Location = new Point(138, 629);
-            textBox2.Name = "textBox2";
-            textBox2.PlaceholderText = "(ex. https://facebook.com/dreeyanzz)";
-            textBox2.Size = new Size(631, 34);
-            textBox2.TabIndex = 8;
-            textBox2.WordWrap = false;
+            //
+            // facebookLinkTextBox
+            //
+            facebookLinkTextBox.Font = new Font("Segoe UI", 12F);
+            facebookLinkTextBox.Location = new Point(138, 629);
+            facebookLinkTextBox.Name = "facebookLinkTextBox";
+            facebookLinkTextBox.PlaceholderText = "(ex. https://facebook.com/dreeyanzz)";
+            facebookLinkTextBox.Size = new Size(631, 34);
+            facebookLinkTextBox.TabIndex = 8;
+            facebookLinkTextBox.WordWrap = false;
             // 
             // fbLinkLabel
             // 
@@ -258,16 +260,16 @@
             fbLinkLabel.Size = new Size(191, 37);
             fbLinkLabel.TabIndex = 7;
             fbLinkLabel.Text = "Facebook Link:";
-            // 
-            // textBox1
-            // 
-            textBox1.Font = new Font("Segoe UI", 12F);
-            textBox1.Location = new Point(138, 475);
-            textBox1.Name = "textBox1";
-            textBox1.PlaceholderText = "(ex. adrianseth.tabotabo@cit.edu)";
-            textBox1.Size = new Size(631, 34);
-            textBox1.TabIndex = 6;
-            textBox1.WordWrap = false;
+            //
+            // institutionalEmailTextBox
+            //
+            institutionalEmailTextBox.Font = new Font("Segoe UI", 12F);
+            institutionalEmailTextBox.Location = new Point(138, 475);
+            institutionalEmailTextBox.Name = "institutionalEmailTextBox";
+            institutionalEmailTextBox.PlaceholderText = "(ex. adrianseth.tabotabo@cit.edu)";
+            institutionalEmailTextBox.Size = new Size(631, 34);
+            institutionalEmailTextBox.TabIndex = 6;
+            institutionalEmailTextBox.WordWrap = false;
             // 
             // institutionalEmailLbl
             // 
@@ -353,11 +355,11 @@
         private Button RemoveColumnButton;
         private TextBox studentIdTextBox;
         private Label studentIdLbl;
-        private TextBox textBox1;
+        private TextBox institutionalEmailTextBox;
         private Label institutionalEmailLbl;
         private TextBox studentNameTextBox;
         private Label studentNameLabel;
-        private TextBox textBox2;
+        private TextBox facebookLinkTextBox;
         private Label fbLinkLabel;
         private Button clearButton;
         private Button submitButton;

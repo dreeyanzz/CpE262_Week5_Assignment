@@ -1,4 +1,4 @@
-﻿namespace week_5_assignment
+namespace week_5_assignment
 {
     partial class ErrorForm
     {
@@ -28,18 +28,67 @@
         /// </summary>
         private void InitializeComponent()
         {
+            errorIcon = new PictureBox();
+            errLbl = new Label();
+            okBtn = new Button();
+            ((System.ComponentModel.ISupportInitialize)errorIcon).BeginInit();
             SuspendLayout();
-            // 
+            //
+            // errorIcon
+            //
+            errorIcon.Image = SystemIcons.Error.ToBitmap();
+            errorIcon.Location = new Point(20, 25);
+            errorIcon.Name = "errorIcon";
+            errorIcon.Size = new Size(32, 32);
+            errorIcon.SizeMode = PictureBoxSizeMode.StretchImage;
+            errorIcon.TabIndex = 0;
+            errorIcon.TabStop = false;
+            //
+            // errLbl
+            //
+            errLbl.Location = new Point(65, 20);
+            errLbl.Name = "errLbl";
+            errLbl.Size = new Size(300, 60);
+            errLbl.TabIndex = 1;
+            errLbl.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+            errLbl.TextAlign = ContentAlignment.MiddleLeft;
+            //
+            // okBtn
+            //
+            okBtn.BackColor = Color.FromArgb(240, 240, 240);
+            okBtn.DialogResult = DialogResult.OK;
+            okBtn.Location = new Point(290, 90);
+            okBtn.Name = "okBtn";
+            okBtn.Size = new Size(80, 30);
+            okBtn.TabIndex = 2;
+            okBtn.Text = "OK";
+            okBtn.UseVisualStyleBackColor = false;
+            //
             // ErrorForm
-            // 
+            //
+            AcceptButton = okBtn;
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(382, 133);
+            BackColor = Color.White;
+            ClientSize = new Size(400, 140);
+            Controls.Add(errorIcon);
+            Controls.Add(errLbl);
+            Controls.Add(okBtn);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "ErrorForm";
-            Text = "Error";
+            Padding = new Padding(20);
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Application Error";
+            ((System.ComponentModel.ISupportInitialize)errorIcon).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
+
+        private PictureBox errorIcon;
+        private Label errLbl;
+        private Button okBtn;
     }
 }

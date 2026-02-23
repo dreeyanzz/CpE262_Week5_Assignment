@@ -1,11 +1,10 @@
-﻿using System.Data;
-using System.Windows.Forms;
+using System.Data;
 
 namespace week_5_assignment
 {
     public partial class Window : Form
     {
-        public readonly DataTable dTable = new();
+        private readonly DataTable dTable = new();
         private int rowNum = 0;
 
         public Window()
@@ -14,11 +13,15 @@ namespace week_5_assignment
 
             dataGridView.DataSource = dTable;
             dTable.Columns.Add(columnName: "id");
+            dTable.Columns.Add(columnName: "Student ID");
+            dTable.Columns.Add(columnName: "Student Name");
+            dTable.Columns.Add(columnName: "Institutional Email");
+            dTable.Columns.Add(columnName: "Facebook Link");
         }
 
         private void OpenAddColumn_Click(object sender, EventArgs e)
         {
-            AddColumnForm addForm = new(parent: this);
+            AddColumnForm addForm = new(table: dTable);
             addForm.ShowDialog();
         }
 
@@ -26,8 +29,21 @@ namespace week_5_assignment
         {
             DataRow newRow = dTable.NewRow();
             newRow[columnName: "id"] = $"{++rowNum}";
-
             dTable.Rows.Add(row: newRow);
+        }
+
+        private void RemoveRow_Click(object sender, EventArgs e)
+        {
+            var rowIndices = dataGridView.SelectedCells
+                .Cast<DataGridViewCell>()
+                .Select(c => c.RowIndex)
+                .Distinct()
+                .OrderByDescending(i => i)
+                .ToList();
+
+            foreach (int idx in rowIndices)
+                if (idx >= 0 && idx < dTable.Rows.Count)
+                    dTable.Rows.RemoveAt(idx);
         }
 
         private void DataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -40,15 +56,14 @@ namespace week_5_assignment
                 if (!dataGridView.Rows[index: e.RowIndex].Cells[index: e.ColumnIndex].Selected)
                 {
                     dataGridView.ClearSelection();
-                    dataGridView.Rows[index: e.RowIndex].Cells[index: e.ColumnIndex].Selected =
-                        true;
+                    dataGridView.Rows[index: e.RowIndex].Cells[index: e.ColumnIndex].Selected = true;
                 }
 
                 ContextMenuStrip menu = new();
+                menu.Closed += (_, _) => menu.Dispose();
 
                 ToolStripMenuItem alignmentMenu = new(text: "Change Alignment for Selection");
 
-                // Helper to apply to all highlighted cells
                 void SetAlignment(DataGridViewContentAlignment align)
                 {
                     foreach (DataGridViewCell selectedCell in dataGridView.SelectedCells)
@@ -83,8 +98,46 @@ namespace week_5_assignment
 
         private void clearButton_Click(object sender, EventArgs e)
         {
-
+            studentIdTextBox.Clear();
+            studentNameTextBox.Clear();
+            institutionalEmailTextBox.Clear();
+            facebookLinkTextBox.Clear();
         }
 
+        private void SubmitButton_Click(object sender, EventArgs e)
+        {
+            string studentId = studentIdTextBox.Text.Trim();
+            string studentName = studentNameTextBox.Text.Trim();
+            string email = institutionalEmailTextBox.Text.Trim();
+            string fbLink = facebookLinkTextBox.Text.Trim();
+
+            if (string.IsNullOrEmpty(studentId))
+            {
+                new ErrorForm("Student ID cannot be empty.").ShowDialog();
+                return;
+            }
+
+            if (string.IsNullOrEmpty(studentName))
+            {
+                new ErrorForm("Student Name cannot be empty.").ShowDialog();
+                return;
+            }
+
+            if (string.IsNullOrEmpty(email) || !email.EndsWith("@cit.edu", StringComparison.OrdinalIgnoreCase))
+            {
+                new ErrorForm("Institutional Email must be a valid @cit.edu address.").ShowDialog();
+                return;
+            }
+
+            DataRow newRow = dTable.NewRow();
+            newRow["id"] = $"{++rowNum}";
+            newRow["Student ID"] = studentId;
+            newRow["Student Name"] = studentName;
+            newRow["Institutional Email"] = email;
+            newRow["Facebook Link"] = fbLink;
+            dTable.Rows.Add(row: newRow);
+
+            clearButton_Click(sender, e);
+        }
     }
 }

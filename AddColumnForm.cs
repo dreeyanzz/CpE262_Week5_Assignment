@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 
 namespace week_5_assignment
 {
     public partial class AddColumnForm : Form
     {
-        private readonly Window _pWindow;
+        private readonly DataTable _table;
 
-        public AddColumnForm(Window parent)
+        public AddColumnForm(DataTable table)
         {
             InitializeComponent();
-
-            _pWindow = parent;
+            _table = table;
         }
 
         private void AddColBtn_Click(object sender, EventArgs e)
@@ -29,15 +22,13 @@ namespace week_5_assignment
                 return;
             }
 
-            // 🛡️ Guard: Check if column already exists to prevent a crash
-            if (_pWindow.dTable.Columns.Contains(name: name))
+            if (_table.Columns.Contains(name: name))
             {
                 new ErrorForm(error: "That column already exists!").ShowDialog();
                 return;
             }
 
-            // Now you access the table through the parent reference
-            _pWindow.dTable.Columns.Add(columnName: name);
+            _table.Columns.Add(columnName: name);
             Close();
         }
     }

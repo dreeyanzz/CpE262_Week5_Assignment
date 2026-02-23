@@ -76,7 +76,6 @@
 
         #endregion
 
-        private Button button1;
         private Button addColBtn;
         private TextBox colNameInput;
         private Label colNameInputLbl;
