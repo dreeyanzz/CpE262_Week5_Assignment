@@ -46,6 +46,8 @@ namespace week_5_assignment
             AddColumnButton = new Button();
             AddRowButton = new Button();
             RemoveColumnButton = new Button();
+            adminExportButton = new Button();
+            adminImportButton = new Button();
             Divider = new Panel();
             panel1 = new Panel();
             dataGridView = new DataGridView();
@@ -67,6 +69,8 @@ namespace week_5_assignment
             submitButton = new Button();
             listTab = new TabPage();
             listRemoveButton = new Button();
+            listExportButton = new Button();
+            listImportButton = new Button();
             listDivider = new Panel();
             listFormCard = new Panel();
             listIdLbl = new Label();
@@ -118,6 +122,8 @@ namespace week_5_assignment
             admin.Controls.Add(AddColumnButton);
             admin.Controls.Add(AddRowButton);
             admin.Controls.Add(RemoveColumnButton);
+            admin.Controls.Add(adminExportButton);
+            admin.Controls.Add(adminImportButton);
             admin.Controls.Add(Divider);
             admin.Controls.Add(panel1);
             admin.Location = new Point(4, 56);
@@ -178,6 +184,41 @@ namespace week_5_assignment
             RemoveColumnButton.UseVisualStyleBackColor = false;
             RemoveColumnButton.Click += RemoveRow_Click;
             adminToolTip.SetToolTip(RemoveColumnButton, "Remove all selected rows (with confirmation)");
+            //
+            // adminExportButton  (maroon — export action)
+            //
+            adminExportButton.BackColor = Color.FromArgb(120, 0, 30);
+            adminExportButton.FlatStyle = FlatStyle.Flat;
+            adminExportButton.FlatAppearance.BorderColor = Color.FromArgb(80, 0, 20);
+            adminExportButton.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            adminExportButton.ForeColor = Color.White;
+            adminExportButton.Location = new Point(458, 18);
+            adminExportButton.Margin = new Padding(0);
+            adminExportButton.Name = "adminExportButton";
+            adminExportButton.Size = new Size(130, 60);
+            adminExportButton.TabIndex = 5;
+            adminExportButton.Text = "Export";
+            adminExportButton.UseVisualStyleBackColor = false;
+            adminExportButton.Click += AdminExportButton_Click;
+            adminToolTip.SetToolTip(adminExportButton, "Export table data to CSV or JSON");
+            //
+            // adminImportButton  (outlined maroon — import action)
+            //
+            adminImportButton.BackColor = Color.White;
+            adminImportButton.FlatStyle = FlatStyle.Flat;
+            adminImportButton.FlatAppearance.BorderColor = Color.FromArgb(120, 0, 30);
+            adminImportButton.FlatAppearance.BorderSize = 2;
+            adminImportButton.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            adminImportButton.ForeColor = Color.FromArgb(120, 0, 30);
+            adminImportButton.Location = new Point(604, 18);
+            adminImportButton.Margin = new Padding(0);
+            adminImportButton.Name = "adminImportButton";
+            adminImportButton.Size = new Size(130, 60);
+            adminImportButton.TabIndex = 6;
+            adminImportButton.Text = "Import";
+            adminImportButton.UseVisualStyleBackColor = false;
+            adminImportButton.Click += AdminImportButton_Click;
+            adminToolTip.SetToolTip(adminImportButton, "Import table data from CSV or JSON");
             //
             // Divider  (maroon Panel separator)
             //
@@ -436,6 +477,8 @@ namespace week_5_assignment
             //
             listTab.BackColor = Color.FromArgb(242, 243, 247);
             listTab.Controls.Add(listRemoveButton);
+            listTab.Controls.Add(listExportButton);
+            listTab.Controls.Add(listImportButton);
             listTab.Controls.Add(listDivider);
             listTab.Controls.Add(listFormCard);
             listTab.Controls.Add(listGridPanel);
@@ -463,6 +506,41 @@ namespace week_5_assignment
             listRemoveButton.UseVisualStyleBackColor = false;
             listRemoveButton.Click += ListRemoveButton_Click;
             adminToolTip.SetToolTip(listRemoveButton, "Remove selected rows from the list (with confirmation)");
+            //
+            // listExportButton  (maroon — export action)
+            //
+            listExportButton.BackColor = Color.FromArgb(120, 0, 30);
+            listExportButton.FlatStyle = FlatStyle.Flat;
+            listExportButton.FlatAppearance.BorderColor = Color.FromArgb(80, 0, 20);
+            listExportButton.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            listExportButton.ForeColor = Color.White;
+            listExportButton.Location = new Point(166, 18);
+            listExportButton.Margin = new Padding(0);
+            listExportButton.Name = "listExportButton";
+            listExportButton.Size = new Size(130, 60);
+            listExportButton.TabIndex = 1;
+            listExportButton.Text = "Export";
+            listExportButton.UseVisualStyleBackColor = false;
+            listExportButton.Click += ListExportButton_Click;
+            adminToolTip.SetToolTip(listExportButton, "Export list data to CSV or JSON");
+            //
+            // listImportButton  (outlined maroon — import action)
+            //
+            listImportButton.BackColor = Color.White;
+            listImportButton.FlatStyle = FlatStyle.Flat;
+            listImportButton.FlatAppearance.BorderColor = Color.FromArgb(120, 0, 30);
+            listImportButton.FlatAppearance.BorderSize = 2;
+            listImportButton.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            listImportButton.ForeColor = Color.FromArgb(120, 0, 30);
+            listImportButton.Location = new Point(312, 18);
+            listImportButton.Margin = new Padding(0);
+            listImportButton.Name = "listImportButton";
+            listImportButton.Size = new Size(130, 60);
+            listImportButton.TabIndex = 2;
+            listImportButton.Text = "Import";
+            listImportButton.UseVisualStyleBackColor = false;
+            listImportButton.Click += ListImportButton_Click;
+            adminToolTip.SetToolTip(listImportButton, "Import list data from CSV or JSON");
             //
             // listDivider  (maroon Panel separator)
             //
@@ -716,6 +794,10 @@ namespace week_5_assignment
         private Button clearButton;
         private Button submitButton;
         private Button listRemoveButton;
+        private Button adminExportButton;
+        private Button adminImportButton;
+        private Button listExportButton;
+        private Button listImportButton;
         private Panel listDivider;
         private Panel listFormCard;
         private Label listIdLbl;

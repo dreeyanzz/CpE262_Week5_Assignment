@@ -1,4 +1,6 @@
 ﻿using System.Data;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace week_5_assignment
 {
@@ -55,9 +57,10 @@ namespace week_5_assignment
             if (rowIndices.Count == 0)
                 return;
 
-            string msg = rowIndices.Count == 1
-                ? "Remove the selected row?"
-                : $"Remove {rowIndices.Count} selected rows?";
+            string msg =
+                rowIndices.Count == 1
+                    ? "Remove the selected row?"
+                    : $"Remove {rowIndices.Count} selected rows?";
 
             if (
                 MessageBox.Show(
@@ -76,7 +79,8 @@ namespace week_5_assignment
 
         private void Tabs_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AcceptButton = Tabs.SelectedTab == user ? submitButton
+            AcceptButton =
+                Tabs.SelectedTab == user ? submitButton
                 : Tabs.SelectedTab == listTab ? listAddButton
                 : null;
         }
@@ -156,13 +160,18 @@ namespace week_5_assignment
             var idParts = studentId.Split('-');
             bool validIdFormat =
                 idParts.Length == 3
-                && idParts[0].Length == 2 && idParts[0].All(char.IsDigit)
-                && idParts[1].Length == 4 && idParts[1].All(char.IsDigit)
-                && idParts[2].Length == 3 && idParts[2].All(char.IsDigit);
+                && idParts[0].Length == 2
+                && idParts[0].All(char.IsDigit)
+                && idParts[1].Length == 4
+                && idParts[1].All(char.IsDigit)
+                && idParts[2].Length == 3
+                && idParts[2].All(char.IsDigit);
 
             if (!validIdFormat)
             {
-                new ErrorForm("Student ID must follow the format YY-NNNN-NNN (e.g. 24-4339-705).").ShowDialog();
+                new ErrorForm(
+                    "Student ID must follow the format YY-NNNN-NNN (e.g. 24-4339-705)."
+                ).ShowDialog();
                 return;
             }
 
@@ -220,13 +229,18 @@ namespace week_5_assignment
             var idParts = studentId.Split('-');
             bool validIdFormat =
                 idParts.Length == 3
-                && idParts[0].Length == 2 && idParts[0].All(char.IsDigit)
-                && idParts[1].Length == 4 && idParts[1].All(char.IsDigit)
-                && idParts[2].Length == 3 && idParts[2].All(char.IsDigit);
+                && idParts[0].Length == 2
+                && idParts[0].All(char.IsDigit)
+                && idParts[1].Length == 4
+                && idParts[1].All(char.IsDigit)
+                && idParts[2].Length == 3
+                && idParts[2].All(char.IsDigit);
 
             if (!validIdFormat)
             {
-                new ErrorForm("Student ID must follow the format YY-NNNN-NNN (e.g. 24-4339-705).").ShowDialog();
+                new ErrorForm(
+                    "Student ID must follow the format YY-NNNN-NNN (e.g. 24-4339-705)."
+                ).ShowDialog();
                 return;
             }
 
@@ -262,9 +276,10 @@ namespace week_5_assignment
             if (rowIndices.Count == 0)
                 return;
 
-            string msg = rowIndices.Count == 1
-                ? "Remove the selected row?"
-                : $"Remove {rowIndices.Count} selected rows?";
+            string msg =
+                rowIndices.Count == 1
+                    ? "Remove the selected row?"
+                    : $"Remove {rowIndices.Count} selected rows?";
 
             if (
                 MessageBox.Show(
@@ -289,6 +304,366 @@ namespace week_5_assignment
             listNameTextBox.Clear();
             listEmailTextBox.Clear();
             listFbLinkTextBox.Clear();
+        }
+
+        // ── IMPORT / EXPORT HELPERS ──────────────────────────────────────────────
+
+        private static string CsvEscape(string? value)
+        {
+            if (value is null)
+                return "";
+            if (value.Contains(',') || value.Contains('"') || value.Contains('\n'))
+                return $"\"{value.Replace("\"", "\"\"")}\"";
+            return value;
+        }
+
+        private static List<string> ParseCsvLine(string line)
+        {
+            var fields = new List<string>();
+            int i = 0;
+            while (i <= line.Length)
+            {
+                if (i == line.Length)
+                {
+                    fields.Add("");
+                    break;
+                }
+                if (line[i] == '"')
+                {
+                    i++;
+                    var sb = new System.Text.StringBuilder();
+                    while (i < line.Length)
+                    {
+                        if (line[i] == '"' && i + 1 < line.Length && line[i + 1] == '"')
+                        {
+                            sb.Append('"');
+                            i += 2;
+                        }
+                        else if (line[i] == '"')
+                        {
+                            i++;
+                            break;
+                        }
+                        else
+                        {
+                            sb.Append(line[i++]);
+                        }
+                    }
+                    fields.Add(sb.ToString());
+                    if (i < line.Length && line[i] == ',')
+                        i++;
+                }
+                else
+                {
+                    int start = i;
+                    while (i < line.Length && line[i] != ',')
+                        i++;
+                    fields.Add(line[start..i]);
+                    if (i < line.Length)
+                        i++;
+                }
+            }
+            return fields;
+        }
+
+        private static (string path, bool isCsv)? ShowSaveDialog()
+        {
+            using SaveFileDialog dlg = new();
+            dlg.Filter = "CSV files (*.csv)|*.csv|JSON files (*.json)|*.json|All files (*.*)|*.*";
+            dlg.FilterIndex = 1;
+            if (dlg.ShowDialog() != DialogResult.OK)
+                return null;
+            return (dlg.FileName, dlg.FilterIndex == 1);
+        }
+
+        private static (string path, bool isCsv)? ShowOpenDialog()
+        {
+            using OpenFileDialog dlg = new();
+            dlg.Filter = "CSV files (*.csv)|*.csv|JSON files (*.json)|*.json|All files (*.*)|*.*";
+            dlg.FilterIndex = 1;
+            if (dlg.ShowDialog() != DialogResult.OK)
+                return null;
+            bool isCsv = Path.GetExtension(dlg.FileName)
+                .Equals(".csv", StringComparison.OrdinalIgnoreCase);
+            return (dlg.FileName, isCsv);
+        }
+
+        // ── ADMIN EXPORT ─────────────────────────────────────────────────────────
+
+        private void AdminExportButton_Click(object sender, EventArgs e)
+        {
+            var result = ShowSaveDialog();
+            if (result is null)
+                return;
+            var (path, isCsv) = result.Value;
+
+            try
+            {
+                if (isCsv)
+                {
+                    var lines = new List<string>();
+                    var headers = dTable
+                        .Columns.Cast<DataColumn>()
+                        .Select(c => CsvEscape(c.ColumnName));
+                    lines.Add(string.Join(",", headers));
+                    foreach (DataRow row in dTable.Rows)
+                    {
+                        var cells = dTable
+                            .Columns.Cast<DataColumn>()
+                            .Select(c => CsvEscape(row[c]?.ToString()));
+                        lines.Add(string.Join(",", cells));
+                    }
+                    File.WriteAllLines(path, lines);
+                }
+                else
+                {
+                    var arr = new JsonArray();
+                    foreach (DataRow row in dTable.Rows)
+                    {
+                        var obj = new JsonObject();
+                        foreach (DataColumn col in dTable.Columns)
+                            obj[col.ColumnName] = JsonValue.Create(row[col]?.ToString() ?? "");
+                        arr.Add(obj);
+                    }
+                    File.WriteAllText(
+                        path,
+                        arr.ToJsonString(new JsonSerializerOptions { WriteIndented = true })
+                    );
+                }
+                MessageBox.Show(
+                    $"Data exported successfully to:\n{path}",
+                    "Export Complete",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+            catch (Exception ex)
+            {
+                new ErrorForm($"Export failed: {ex.Message}").ShowDialog();
+            }
+        }
+
+        // ── ADMIN IMPORT ─────────────────────────────────────────────────────────
+
+        private void AdminImportButton_Click(object sender, EventArgs e)
+        {
+            if (dTable.Rows.Count > 0)
+            {
+                if (
+                    MessageBox.Show(
+                        "This will replace all existing data. Continue?",
+                        "Confirm Import",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    ) != DialogResult.Yes
+                )
+                    return;
+            }
+
+            var result = ShowOpenDialog();
+            if (result is null)
+                return;
+            var (path, isCsv) = result.Value;
+
+            try
+            {
+                List<string> headers = [];
+                List<List<string>> dataRows = [];
+
+                if (isCsv)
+                {
+                    var lines = File.ReadAllLines(path);
+                    if (lines.Length == 0)
+                        throw new InvalidDataException("CSV file is empty.");
+                    headers = ParseCsvLine(lines[0]);
+                    dataRows = lines.Skip(1).Select(ParseCsvLine).ToList();
+                }
+                else
+                {
+                    var json = File.ReadAllText(path);
+                    var arr =
+                        JsonNode.Parse(json)?.AsArray()
+                        ?? throw new InvalidDataException("JSON file must contain an array.");
+                    if (arr.Count > 0)
+                    {
+                        var firstObj = arr[0]!.AsObject();
+                        headers = firstObj.Select(kvp => kvp.Key).ToList();
+                        dataRows = arr.Select(node =>
+                            {
+                                var obj = node!.AsObject();
+                                return headers
+                                    .Select(h => obj[h]?.GetValue<string>() ?? "")
+                                    .ToList();
+                            })
+                            .ToList();
+                    }
+                }
+
+                dTable.Rows.Clear();
+                dTable.Columns.Clear();
+                foreach (string header in headers)
+                {
+                    dTable.Columns.Add(header);
+                    if (header == "id")
+                        dTable.Columns["id"]!.ReadOnly = true;
+                }
+                foreach (var rowData in dataRows)
+                {
+                    DataRow row = dTable.NewRow();
+                    for (int i = 0; i < Math.Min(rowData.Count, dTable.Columns.Count); i++)
+                        row[i] = rowData[i];
+                    dTable.Rows.Add(row);
+                }
+                rowNum = dTable.Rows.Count;
+                MessageBox.Show(
+                    $"Data imported successfully. {dTable.Rows.Count} row(s) loaded.",
+                    "Import Complete",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+            catch (Exception ex)
+            {
+                new ErrorForm($"Import failed: {ex.Message}").ShowDialog();
+            }
+        }
+
+        // ── LIST EXPORT ──────────────────────────────────────────────────────────
+
+        private void ListExportButton_Click(object sender, EventArgs e)
+        {
+            var result = ShowSaveDialog();
+            if (result is null)
+                return;
+            var (path, isCsv) = result.Value;
+
+            string[] fixedHeaders =
+            [
+                "Student ID",
+                "Student Name",
+                "Institutional Email",
+                "Facebook Link",
+            ];
+            try
+            {
+                if (isCsv)
+                {
+                    var lines = new List<string>();
+                    lines.Add(string.Join(",", fixedHeaders.Select(CsvEscape)));
+                    foreach (var s in studentList)
+                        lines.Add(string.Join(",", s.Select(CsvEscape)));
+                    File.WriteAllLines(path, lines);
+                }
+                else
+                {
+                    var arr = new JsonArray();
+                    foreach (var s in studentList)
+                    {
+                        var obj = new JsonObject();
+                        for (int i = 0; i < fixedHeaders.Length; i++)
+                            obj[fixedHeaders[i]] = JsonValue.Create(s[i]);
+                        arr.Add(obj);
+                    }
+                    File.WriteAllText(
+                        path,
+                        arr.ToJsonString(new JsonSerializerOptions { WriteIndented = true })
+                    );
+                }
+                MessageBox.Show(
+                    $"Data exported successfully to:\n{path}",
+                    "Export Complete",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+            catch (Exception ex)
+            {
+                new ErrorForm($"Export failed: {ex.Message}").ShowDialog();
+            }
+        }
+
+        // ── LIST IMPORT ──────────────────────────────────────────────────────────
+
+        private void ListImportButton_Click(object sender, EventArgs e)
+        {
+            if (studentList.Count > 0)
+            {
+                if (
+                    MessageBox.Show(
+                        "This will replace all existing data. Continue?",
+                        "Confirm Import",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    ) != DialogResult.Yes
+                )
+                    return;
+            }
+
+            var result = ShowOpenDialog();
+            if (result is null)
+                return;
+            var (path, isCsv) = result.Value;
+
+            try
+            {
+                List<string[]> parsed = [];
+                int skipped = 0;
+
+                if (isCsv)
+                {
+                    var lines = File.ReadAllLines(path);
+                    foreach (var line in lines.Skip(1))
+                    {
+                        var fields = ParseCsvLine(line);
+                        if (fields.Count >= 4)
+                            parsed.Add([fields[0], fields[1], fields[2], fields[3]]);
+                        else
+                            skipped++;
+                    }
+                }
+                else
+                {
+                    var json = File.ReadAllText(path);
+                    var arr =
+                        JsonNode.Parse(json)?.AsArray()
+                        ?? throw new InvalidDataException("JSON file must contain an array.");
+                    string[] keys =
+                    [
+                        "Student ID",
+                        "Student Name",
+                        "Institutional Email",
+                        "Facebook Link",
+                    ];
+                    foreach (var node in arr)
+                    {
+                        var obj = node!.AsObject();
+                        if (keys.All(k => obj.ContainsKey(k)))
+                            parsed.Add(
+                                keys.Select(k => obj[k]?.GetValue<string>() ?? "").ToArray()
+                            );
+                        else
+                            skipped++;
+                    }
+                }
+
+                studentList.Clear();
+                studentList.AddRange(parsed);
+                RefreshListGrid();
+
+                string msg = $"Data imported successfully. {studentList.Count} row(s) loaded.";
+                if (skipped > 0)
+                    msg += $"\n{skipped} malformed row(s) were skipped.";
+                MessageBox.Show(
+                    msg,
+                    "Import Complete",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+            catch (Exception ex)
+            {
+                new ErrorForm($"Import failed: {ex.Message}").ShowDialog();
+            }
         }
     }
 }
