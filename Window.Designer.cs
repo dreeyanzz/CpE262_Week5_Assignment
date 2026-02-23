@@ -28,6 +28,8 @@ namespace week_5_assignment
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            adminToolTip = new ToolTip(components);
             DataGridViewCellStyle dgvHeaderStyle = new DataGridViewCellStyle();
             DataGridViewCellStyle dgvAltRowStyle = new DataGridViewCellStyle();
             DataGridViewCellStyle dgvDefaultStyle = new DataGridViewCellStyle();
@@ -78,6 +80,7 @@ namespace week_5_assignment
             Tabs.SelectedIndex = 0;
             Tabs.Size = new Size(1920, 991);
             Tabs.TabIndex = 0;
+            Tabs.SelectedIndexChanged += Tabs_SelectedIndexChanged;
             //
             // admin
             //
@@ -110,6 +113,7 @@ namespace week_5_assignment
             AddColumnButton.Text = "Add Column";
             AddColumnButton.UseVisualStyleBackColor = false;
             AddColumnButton.Click += OpenAddColumn_Click;
+            adminToolTip.SetToolTip(AddColumnButton, "Add a new column to the table");
             //
             // AddRowButton  (maroon — constructive)
             //
@@ -126,6 +130,7 @@ namespace week_5_assignment
             AddRowButton.Text = "Add Row";
             AddRowButton.UseVisualStyleBackColor = false;
             AddRowButton.Click += AddRow_Click;
+            adminToolTip.SetToolTip(AddRowButton, "Add a blank row to the table");
             //
             // RemoveColumnButton  (dark red — destructive)
             //
@@ -142,6 +147,7 @@ namespace week_5_assignment
             RemoveColumnButton.Text = "Remove Row";
             RemoveColumnButton.UseVisualStyleBackColor = false;
             RemoveColumnButton.Click += RemoveRow_Click;
+            adminToolTip.SetToolTip(RemoveColumnButton, "Remove all selected rows (with confirmation)");
             //
             // Divider  (maroon Panel separator)
             //
@@ -163,6 +169,7 @@ namespace week_5_assignment
             //
             // dataGridView
             //
+            dataGridView.AllowUserToAddRows = false;
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.BackgroundColor = Color.White;
@@ -193,6 +200,10 @@ namespace week_5_assignment
             dataGridView.Dock = DockStyle.Fill;
             dataGridView.Location = new Point(0, 0);
             dataGridView.Name = "dataGridView";
+            dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(120, 0, 30);
+            dataGridView.RowHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(80, 0, 20);
+            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = Color.White;
             dataGridView.RowHeadersWidth = 51;
             dataGridView.Size = new Size(1874, 798);
             dataGridView.TabIndex = 0;
@@ -290,7 +301,7 @@ namespace week_5_assignment
             studentIdTextBox.Font = new Font("Segoe UI", 12F);
             studentIdTextBox.Location = new Point(50, 73);
             studentIdTextBox.Name = "studentIdTextBox";
-            studentIdTextBox.PlaceholderText = "(ex. 24-4339-705)";
+            studentIdTextBox.PlaceholderText = "24-4339-705";
             studentIdTextBox.Size = new Size(660, 34);
             studentIdTextBox.TabIndex = 2;
             studentIdTextBox.WordWrap = false;
@@ -311,7 +322,7 @@ namespace week_5_assignment
             studentNameTextBox.Font = new Font("Segoe UI", 12F);
             studentNameTextBox.Location = new Point(50, 170);
             studentNameTextBox.Name = "studentNameTextBox";
-            studentNameTextBox.PlaceholderText = "(ex. Tabotabo, Adrian Seth M.)";
+            studentNameTextBox.PlaceholderText = "Tabotabo, Adrian Seth M.";
             studentNameTextBox.Size = new Size(660, 34);
             studentNameTextBox.TabIndex = 4;
             studentNameTextBox.WordWrap = false;
@@ -332,7 +343,7 @@ namespace week_5_assignment
             institutionalEmailTextBox.Font = new Font("Segoe UI", 12F);
             institutionalEmailTextBox.Location = new Point(50, 267);
             institutionalEmailTextBox.Name = "institutionalEmailTextBox";
-            institutionalEmailTextBox.PlaceholderText = "(ex. adrianseth.tabotabo@cit.edu)";
+            institutionalEmailTextBox.PlaceholderText = "adrianseth.tabotabo@cit.edu";
             institutionalEmailTextBox.Size = new Size(660, 34);
             institutionalEmailTextBox.TabIndex = 6;
             institutionalEmailTextBox.WordWrap = false;
@@ -353,7 +364,7 @@ namespace week_5_assignment
             facebookLinkTextBox.Font = new Font("Segoe UI", 12F);
             facebookLinkTextBox.Location = new Point(50, 364);
             facebookLinkTextBox.Name = "facebookLinkTextBox";
-            facebookLinkTextBox.PlaceholderText = "(ex. https://facebook.com/dreeyanzz)";
+            facebookLinkTextBox.PlaceholderText = "https://facebook.com/dreeyanzz";
             facebookLinkTextBox.Size = new Size(660, 34);
             facebookLinkTextBox.TabIndex = 8;
             facebookLinkTextBox.WordWrap = false;
@@ -438,5 +449,6 @@ namespace week_5_assignment
         private TextBox facebookLinkTextBox;
         private Button clearButton;
         private Button submitButton;
+        private ToolTip adminToolTip;
     }
 }

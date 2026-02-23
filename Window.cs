@@ -13,6 +13,7 @@ namespace week_5_assignment
 
             dataGridView.DataSource = dTable;
             dTable.Columns.Add(columnName: "id");
+            dTable.Columns["id"]!.ReadOnly = true;
             dTable.Columns.Add(columnName: "Student ID");
             dTable.Columns.Add(columnName: "Student Name");
             dTable.Columns.Add(columnName: "Institutional Email");
@@ -41,9 +42,31 @@ namespace week_5_assignment
                 .OrderByDescending(i => i)
                 .ToList();
 
+            if (rowIndices.Count == 0)
+                return;
+
+            string msg = rowIndices.Count == 1
+                ? "Remove the selected row?"
+                : $"Remove {rowIndices.Count} selected rows?";
+
+            if (
+                MessageBox.Show(
+                    msg,
+                    "Confirm Removal",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                ) != DialogResult.Yes
+            )
+                return;
+
             foreach (int idx in rowIndices)
                 if (idx >= 0 && idx < dTable.Rows.Count)
                     dTable.Rows.RemoveAt(idx);
+        }
+
+        private void Tabs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AcceptButton = Tabs.SelectedTab == user ? submitButton : null;
         }
 
         private void DataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -115,6 +138,19 @@ namespace week_5_assignment
             if (string.IsNullOrEmpty(studentId))
             {
                 new ErrorForm("Student ID cannot be empty.").ShowDialog();
+                return;
+            }
+
+            var idParts = studentId.Split('-');
+            bool validIdFormat =
+                idParts.Length == 3
+                && idParts[0].Length == 2 && idParts[0].All(char.IsDigit)
+                && idParts[1].Length == 4 && idParts[1].All(char.IsDigit)
+                && idParts[2].Length == 3 && idParts[2].All(char.IsDigit);
+
+            if (!validIdFormat)
+            {
+                new ErrorForm("Student ID must follow the format YY-NNNN-NNN (e.g. 24-4339-705).").ShowDialog();
                 return;
             }
 
